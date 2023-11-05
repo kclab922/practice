@@ -298,6 +298,9 @@ def delete(request, id):
     return redirect('postings:index')
 ```
 
+- `<appname>/` 서버 정상작동 확인
+
+
 
 
 ### 4. Update
@@ -346,4 +349,42 @@ def update(request, id):
     }
     
     return render(request, 'update.html', context)
+```
+
+- `<appname>/` 서버 정상작동 확인
+
+
+
+### 4. `create` + `update` => `form.html` 코드 통합
+
+-  `create.html` => `form.html`로 변경 
+
+- `update.html` 삭제
+
+- `form.html`
+```html
+{% block body %}
+
+    <!-- creat 누르면 게시물 생성 / update 누르면 게시물 수정 뜨게 하는 코드 -->
+    {% if request.resolver_mathc_url_name == 'update' %}
+        <h1>게시물 수정</h1>
+    {% else %}
+        <h1>게시물 생성</h1>
+    {% endif %}
+
+    <form action="" method="POST">
+    ....
+```
+
+- `views.py`
+```python
+# create 함수 수정
+    return render(request, 'create.html', context)
+                    # ↓
+    return render(request, 'form.html', context)
+
+# update 함수 수정
+    return render(request, 'update.html', context)
+                    # ↓
+    return render(request, 'form.html', context)
 ```
