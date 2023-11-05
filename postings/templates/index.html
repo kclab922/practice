@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <h1>index</h1>
+
+    {% for posting in postings %}
+    <p>{{ posting.title }}</p>
+    <p>{{ posting.content }}</p>
+    <hr>
+    {% endfor %}
+
+{% endblock %}
