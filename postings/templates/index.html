@@ -7,6 +7,7 @@
     {% for posting in postings %}
     <p>{{ posting.title }}</p>
     <p>{{ posting.content }}</p>
+    <a href="{% url 'postings:delete' id=posting.id %}">Delete</a>
     <hr>
     {% endfor %}
 

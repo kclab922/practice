@@ -6,8 +6,11 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>base</h1>
+    <h1>여기는 Base</h1>
+    <a href="{% url 'postings:index' %}">Home</a>
+    <a href="{% url 'postings:create' %}">Create</a>
     {% block body %}
+
     {% endblock %}
 </body>
 </html>

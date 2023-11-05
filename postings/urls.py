@@ -6,4 +6,5 @@ app_name = 'postings'
 urlpatterns = [
     path('', views.index, name='index'),
     path('create/', views.create, name='create'),
+    path('<int:id>/delete/', views.delete, name='delete')
 ]

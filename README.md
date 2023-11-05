@@ -212,7 +212,7 @@ from .models import Post
 class PostForm(forms.ModelForm):
 
     class Meta:
-        model = 'Post'
+        model = Post
         fields = '__all__'
 ```
 
@@ -225,7 +225,7 @@ class PostForm(forms.ModelForm):
     <form action="" method="POST">
         {% csrf_token %}
 
-        {form}
+        {{ form }}
         
         <input type="submit">
     </form>
@@ -238,8 +238,67 @@ class PostForm(forms.ModelForm):
     path('create/', views.create, name='create'),
 ```
 
+- `views.py`
+```python
+def create(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+
+        if form.is_valid():
+            posting = form.save()
+            return redirect('postings:index')
+
+    else:
+        form = PostForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, 'create.html', context)
+```
+
+- `base.html` 버튼 만들기
+```html
+<body>
+    <h1>여기는 Base</h1>
+    <a href="{% url 'postings:index' %}">Home</a>
+    <a href="{% url 'postings:create' %}">Create</a>
+    {% block body %}
+
+    {% endblock %}
+</body>
+```
+
+- `<appname>/` 서버 정상작동 확인
+
+
 
 ### 3. Delete
+- `index.html`에 delete 버튼 생성
+```html
+    {% for posting in postings %}
+    <p>{{ posting.title }}</p>
+    <p>{{ posting.content }}</p>
+    <a href="{% url 'postings:delete' id=posting.id %}">Delete</a>
+    <hr>
+    {% endfor %}
+```
+
+- `urls.py`
+```python
+    path('<int:id>/delete/', views.delete, name='delete')
+```
+
+- `views.py`
+```python
+def delete(request, id):
+    posting = Post.objects.get(id=id)
+    posting.delete()
+
+    return redirect('postings:index')
+```
+
+
 
 
 ### 4. Update

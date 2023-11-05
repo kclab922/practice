@@ -17,22 +17,22 @@ def create(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
 
-        if form.isvalid():
+        if form.is_valid():
             posting = form.save()
             return redirect('postings:index')
 
-        else:
-            context = {
-                'form': form
-            }
-            return render(request, 'create.html', context)
-
-
-    
     else:
         form = PostForm()
 
-        context = {
-            'form': form
-        }
-        return render(request, 'create.html', context)
+    context = {
+        'form': form
+    }
+    return render(request, 'create.html', context)
+
+
+def delete(request, id):
+    posting = Post.objects.get(id=id)
+
+    posting.delete()
+
+    return redirect('postings:index')
