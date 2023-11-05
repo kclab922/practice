@@ -8,6 +8,7 @@
     <p>{{ posting.title }}</p>
     <p>{{ posting.content }}</p>
     <a href="{% url 'postings:delete' id=posting.id %}">Delete</a>
+    <a href="{% url 'postings:update' id=posting.id %}">Update</a>
     <hr>
     {% endfor %}
 

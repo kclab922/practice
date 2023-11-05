@@ -286,7 +286,7 @@ def create(request):
 
 - `urls.py`
 ```python
-    path('<int:id>/delete/', views.delete, name='delete')
+    path('<int:id>/delete/', views.delete, name='delete'),
 ```
 
 - `views.py`
@@ -300,6 +300,50 @@ def delete(request, id):
 
 
 
-
 ### 4. Update
     - create 로직과 read 로직의 합
+
+- `index.html`에 update 버튼 추가
+```html
+    <a href="{% url 'postings:update' id=posting.id %}">Update</a>
+```
+
+- `update.html`
+```html
+{% extends 'base.html' %}
+
+{% block body %}
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit">
+</form>
+{% endblock %}
+```
+
+- `urls.py`
+```python
+    path('<int:id>/update/', views.update, name='update'),
+```
+
+- `views.py`
+```python
+def update(request, id):
+    posting = Post.objects.get(id=id)
+
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=posting)
+
+        if form.is_valid():
+            form.save()
+            return redirect ('postings:index')
+    
+    else:
+        form = PostForm(instance=posting)
+
+    context = {
+        'form': form
+    }
+    
+    return render(request, 'update.html', context)
+```
